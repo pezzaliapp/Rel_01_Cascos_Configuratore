@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <title>Lift Configurator — pezzaliAPP.com</title>
+  <base href="./">
+
+  <meta name="theme-color" content="#0b1022">
+  <meta name="background-color" content="#0b1022">
+  <meta name="description" content="Lift Configurator — Strumento professionale per la preventivazione e selezione sollevatori a 2 colonne CASCOS. Sviluppato da pezzaliAPP.com">
+  <meta name="author" content="Alessandro Pezzali — pezzaliAPP.com">
+
+  <!-- PWA / icone -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <link rel="preload" as="fetch" href="models.json?v=20251010" crossorigin="anonymous">
+
+  <style>
+    :root{ --bg:#0b1022; --card:#111735; --ink:#eef2ff; --muted:#9fb0d9; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; --line:#1d2a55; --focus:#2dd4bf; }
+    *{box-sizing:border-box} html,body{height:100%; -webkit-text-size-adjust:100%}
+    body{margin:0;background:#0b1022;color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    header{position:sticky;top:0;z-index:10;background:#0c1430cc;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:max(0px, env(safe-area-inset-top))}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    h1{margin:0;font-size:20px;line-height:1.2}
+    .grid{display:grid;gap:16px}
+    @media(min-width:950px){.grid{grid-template-columns:1.1fr .9fr}}
+    @media(max-width:680px){
+      .row{grid-template-columns:1fr !important}
+      nav{gap:6px !important;flex-wrap:wrap}
+      .wrap{padding-left:12px;padding-right:12px}
+    }
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px #0003}
+    .card h2{margin:0 0 8px 0;font-size:18px;line-height:1.2}
+    .card .inner{padding:14px}
+    label{display:block;margin:8px 0 6px 0;color:var(--muted)}
+    input,select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#0e1634;color:var(--ink);outline:none}
+    input:focus,select:focus{border-color:var(--focus);box-shadow:0 0 0 3px #2dd4bf33}
+    .row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    .btn{display:inline-flex;align-items:center;gap:8px;background:#0e193f;border:1px solid var(--line);padding:10px 14px;border-radius:12px;color:var(--ink);cursor:pointer;text-decoration:none;white-space:nowrap}
+    .btn:hover{border-color:var(--focus)}
+    .btn.primary{background:linear-gradient(180deg,#1a285e,#132454);border-color:#243b7a}
+    .hint{font-size:12px;color:var(--muted)}
+    .tag{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;margin-right:6px;color:var(--muted)}
+    .table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+    table{width:100%;border-collapse:collapse;min-width:920px}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    th{color:var(--muted);font-weight:600}
+    .ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+    footer{opacity:.8;color:var(--muted);padding:20px 0;padding-bottom:max(20px, env(safe-area-inset-bottom))}
+    .callout{border-left:4px solid var(--focus);background:#0f183b;padding:12px 14px;border-radius:12px}
+    .chips{display:flex;flex-wrap:wrap;gap:6px}
+    .lang{display:flex;gap:8px;align-items:center}
+    #errBanner:empty { display:none; }
+
+    /* Floating Home (solo PWA) */
+    .home-fab{
+      position:fixed;right:16px;bottom:16px;z-index:60;
+      display:none;align-items:center;gap:8px;
+      background:linear-gradient(180deg,#1a285e,#132454);
+      color:var(--ink);border:1px solid #243b7a;border-radius:999px;
+      padding:10px 14px;text-decoration:none;box-shadow:0 8px 24px #0006
+    }
+    .home-fab.show{display:inline-flex}
+    @media (max-width:680px){ .home-fab{right:12px;bottom:12px} }
+
+    @media print { header, .lang, .callout, .home-fab { display:none } body { background:white; color:black } .card { box-shadow:none; border-color:#ddd } }
+  </style>
+
+  <!-- Bootstrap dataset & pulizia cache/SW (PRIMA di app.js) -->
+  <script>
+    (function () {
+      window.MODELS_URL = 'models.json?v=20251010';
+
+      // Aggiorna SW e ripulisci cache vecchie
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations()
+          .then(rs => rs.forEach(r => r.update && r.update()))
+          .catch(()=>{});
+      }
+      if (window.caches) {
+        caches.keys()
+          .then(keys => Promise.all(keys.filter(k => /^cascos-config-/.test(k) && k !== 'cascos-config-v5').map(k => caches.delete(k))))
+          .catch(()=>{});
+      }
+
+      // Banner errori JS (filtra rumore)
+      function showErr(msg){
+        const b=document.getElementById('errBanner'); if(b && !b.textContent) b.textContent = msg;
+      }
+      window.addEventListener('error', (e) => {
+        if (e.target && (e.target.src || e.target.href)) return;
+        if (/ResizeObserver/.test(e?.message||'')) return;
+        showErr('Errore di runtime: ' + (e?.message || 'sconosciuto'));
+      });
+      window.addEventListener('unhandledrejection', (e) => {
+        showErr('Errore dati/modelli: ' + (e?.reason?.message || 'fetch/json'));
+      });
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap">
+      <h1 id="t_title">🔧 CASCOS — Configuratore Sollevatori 2 Colonne</h1>
+      <nav style="display:flex;gap:8px;align-items:center">
+        <a class="btn" href="./index.html">🏠 Home</a>
+        <div class="lang">
+          <label for="langSel" class="hint" id="t_lang">Lingua</label>
+          <select id="langSel" aria-label="Seleziona lingua">
+            <option value="it">Italiano</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="pt">Português</option>
+          </select>
+        </div>
+        <button class="btn" id="shareBtn" type="button">🔗 <span id="t_share">Condividi</span></button>
+        <button class="btn" id="csvBtn" type="button">🧾 <span id="t_csv">CSV</span></button>
+        <button class="btn" id="pdfMultiBtn" type="button">🖨️ <span id="t_pdfmulti">PDF multiplo</span></button>
+        <button class="btn" id="saveBtn" type="button">💾 <span id="t_save">Salva</span></button>
+        <a class="btn" href="README.html" target="_blank" rel="noopener">📖 <span id="t_readme">Leggimi</span></a>
+        <a class="btn" href="LICENSE.html#it" target="_blank" rel="noopener">📜 Licenza</a>
+        <button class="btn" id="installBtn" type="button" hidden>➕ <span id="t_install">Installa</span></button>
+        <button class="btn" id="legalBtn" type="button">ℹ️ Info legali</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner errori -->
+  <div id="errBanner" style="max-width:1100px;margin:8px auto 0;color:#fff;background:#b91c1c;border:1px solid #7f1d1d;border-radius:10px;padding:8px 12px;font:13px system-ui"></div>
+
+  <main class="wrap grid" id="app">
+    <!-- 1) Vincoli officina -->
+    <section class="card">
+      <div class="inner">
+        <h2 id="t_sec1">1) Vincoli dell’officina</h2>
+        <div class="row">
+          <div>
+            <label id="t_h" for="inpH">Altezza utile soffitto (mm)</label>
+            <input type="number" id="inpH" placeholder="es. 4000" min="2500" step="10">
+          </div>
+          <div>
+            <label id="t_w" for="inpW">Larghezza baia disponibile (mm)</label>
+            <input type="number" id="inpW" placeholder="es. 3500" min="3000" step="10">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label id="t_conc" for="inpConcrete">Qualità calcestruzzo</label>
+            <select id="inpConcrete">
+              <option value="C20/25">C20/25 (standard EN)</option>
+              <option value="C25/30">C25/30</option>
+              <option value="unknown">Sconosciuta</option>
+            </select>
+            <div class="hint" id="t_conc_hint">Per i modelli 3.2–5.5 t sono richiesti ancoraggi su calcestruzzo C20/25.</div>
+          </div>
+          <div>
+            <label id="t_th" for="inpThickness">Spessore soletta (mm)</label>
+            <input type="number" id="inpThickness" placeholder="≥ 170 consigliato" min="100" step="1">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label id="t_pow" for="inpPower">Alimentazione disponibile</label>
+            <select id="inpPower">
+              <option value="400/3~">Trifase 400 V</option>
+              <option value="230/3~">Trifase 230 V</option>
+              <option value="230/1~">Monofase 230 V</option>
+            </select>
+          </div>
+          <div>
+            <label id="t_base" for="inpBase">Tipo colonna</label>
+            <select id="inpBase">
+              <option value="withbase">Con basamento/pedana</option>
+              <option value="baseless">Senza basamento (sbalzo libero)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px" class="callout" id="t_tip">
+          Suggerimento: imposta <em>larghezza baia ≥ 3350 mm</em> per le serie C3.2–C4; per veicoli lunghi valuta le versioni XL / WAGON.
+        </div>
+      </div>
+    </section>
+
+    <!-- 2) Veicolo -->
+    <section class="card">
+      <div class="inner">
+        <h2 id="t_sec2">2) Veicolo tipo da sollevare</h2>
+
+        <div class="row">
+          <div>
+            <label id="t_secVeh" for="vehicleSel">Tipo di veicolo</label>
+            <select id="vehicleSel"></select>
+          </div>
+          <div>
+            <label id="t_gvw" for="inpGVW">Peso veicolo (kg)</label>
+            <input type="number" id="inpGVW" placeholder="es. 2200" min="600" step="10">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label id="t_wb" for="inpWB">Passo (mm) / ingombro</label>
+            <input type="number" id="inpWB" placeholder="es. 2900" min="1800" step="10">
+          </div>
+          <div>
+            <label id="t_use" for="inpUse">Uso</label>
+            <select id="inpUse">
+              <option value="auto">Auto / SUV</option>
+              <option value="van">Van / Furgoni</option>
+              <option value="mpv">MPV / crossover</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label id="t_duty" for="inpDuty">Frequenza cicli/h</label>
+            <!-- fix: rimosso id duplicato -->
+            <select id="inpDuty">
+              <option value="6">Intermittente (≈6 mov/h)</option>
+              <option value="10">Intensivo (≥10 mov/h)</option>
+            </select>
+          </div>
+          <div></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn primary" id="calcBtn" type="button">⚙️ <span id="t_calc">Calcola suggerimenti</span></button>
+          <button class="btn" id="resetBtn" type="button">↺ <span id="t_reset">Reset</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3) Risultati -->
+    <section class="card" style="grid-column:1/-1">
+      <div class="inner">
+        <h2 id="t_sec3">3) Risultati e modelli consigliati</h2>
+        <div id="warnings" class="chips" aria-live="polite"></div>
+        <div class="table-wrap">
+          <table id="tbl" aria-label="Risultati e modelli consigliati">
+            <thead>
+              <tr>
+                <th id="t_th_model">Modello</th>
+                <th id="t_th_cap">Portata</th>
+                <th id="t_th_inter">Interasse<br>(mm)</th>
+                <th id="t_th_width">Larghezza tot.<br>(mm)</th>
+                <th id="t_th_height">Altezza utile<br>sotto traversa (mm)</th>
+                <th id="t_th_power">Alimentazione</th>
+                <th id="t_th_anchor">Anc. / Spessore<br>soletta</th>
+                <th id="t_th_arms">Bracci</th>
+                <th id="t_th_notes">Note</th>
+                <th>Sel.</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="hint" style="margin-top:8px">
+          I dati sono indicativi e non sostituiscono il manuale e la verifica del cantiere. Consulta sempre le istruzioni ufficiali CASCOS.
+        </div>
+      </div>
+    </section>
+
+    <!-- 4) Documenti -->
+    <section class="card">
+      <div class="inner">
+        <h2>4) Documenti utili</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <a class="btn doclink" href="docs/fondazioni_cascos_c4c.pdf" target="_blank" rel="noopener">🏗️ Schema fondazioni</a>
+          <a class="btn doclink" href="docs/manuale_tecnico_presentazione.pdf" target="_blank" rel="noopener">📘 Manuale tecnico</a>
+          <a class="btn doclink" href="docs/scheda_con_pedana.pdf" target="_blank" rel="noopener">📄 Versioni con pedana</a>
+          <a class="btn doclink" href="docs/scheda_senza_pedana_2022.pdf" target="_blank" rel="noopener">📄 Versioni senza pedana</a>
+          <a class="btn doclink" id="armsGeneralBtn" href="ARMS_FILES/MISURE_GENERALI_BRACCI_TIPO_VEICOLI.pdf" target="_blank" rel="noopener">📐 Misure generali (tipi veicolo)</a>
+          <a class="btn" href="LICENSE.html#it" target="_blank" rel="noopener">📜 Licenza (completa)</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap"><div>© Cascos_Configuratore — PWA open-source.</div></footer>
+
+  <!-- FAB Home (compare solo in PWA standalone) -->
+  <a href="./index.html" class="home-fab" id="homeFab">🏠 Home</a>
+
+  <!-- Modal “Informazioni legali” -->
+  <div class="modal-backdrop" id="legalModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+      <header>
+        <h3 id="legalTitle">Informazioni legali</h3>
+        <button class="close" id="legalClose" aria-label="Chiudi">✕</button>
+      </header>
+      <div class="body">
+        <div class="legal lang-it">
+          <p><strong>Uso consentito:</strong> preventivazione commerciale per la vendita, dimostrazioni e formazione interna.</p>
+          <p><strong>Marchi:</strong> “CASCOS” e le denominazioni dei modelli sono dei rispettivi proprietari; uso descrittivo, nessuna affiliazione.</p>
+          <p><strong>Divieti:</strong> vietata copia/redistribuzione dell’app senza autorizzazione scritta. Possibile marcatura anti-diffusione.</p>
+          <p><strong>Responsabilità:</strong> dati indicativi; valgono i documenti ufficiali dei produttori.</p>
+        </div>
+        <div class="legal lang-en" hidden>
+          <p><strong>Permitted use:</strong> commercial quoting/sales proposals, demos and internal training.</p>
+          <p><strong>Trademarks:</strong> “CASCOS” and model names belong to their owners; descriptive use only, no affiliation.</p>
+          <p><strong>Restrictions:</strong> copying/redistribution of the app is prohibited without written consent. Anti–leak marking may apply.</p>
+          <p><strong>Disclaimer:</strong> data is indicative; official manufacturer documents prevail.</p>
+        </div>
+        <div class="legal lang-es" hidden>
+          <p><strong>Uso permitido:</strong> presupuestación comercial para la venta, demostraciones y formación interna.</p>
+          <p><strong>Marcas:</strong> “CASCOS” y los nombres de modelos pertenecen a sus titulares; uso descriptivo, sin afiliación.</p>
+          <p><strong>Restricciones:</strong> prohibida la copia/distribución sin autorización escrita. Posible marcado anti–difusión.</p>
+          <p><strong>Descargo:</strong> datos indicativos; prevalecen los documentos oficiales del fabricante.</p>
+        </div>
+        <div class="legal lang-fr" hidden>
+          <p><strong>Usage autorisé :</strong> chiffrage commercial pour la vente, démonstrations et formation interne.</p>
+          <p><strong>Marques :</strong> “CASCOS” et les noms des modèles appartiennent à leurs propriétaires ; usage descriptif, aucune affiliation.</p>
+          <p><strong>Restrictions :</strong> copie/distribution interdites sans accord écrit. Marquage anti–diffusion possible.</p>
+          <p><strong>Responsabilité :</strong> données indicatives ; les documents officiels du constructeur prévalent.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn" id="legalFullLink" href="LICENSE.html#it" target="_blank" rel="noopener">📜 Licenza completa</a>
+        <button class="btn primary" id="legalOk" type="button">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script modale + FAB + routing PDF/esterni -->
+  <script>
+    (function(){
+      const modal = document.getElementById('legalModal');
+      const openBtn = document.getElementById('legalBtn');
+      const closeBtn = document.getElementById('legalClose');
+      const okBtn = document.getElementById('legalOk');
+      const langSel = document.getElementById('langSel');
+      const fullLink = document.getElementById('legalFullLink');
+
+      function currentLang(){ const l = document.documentElement.lang || (langSel && langSel.value) || 'it'; return ['it','en','es','fr'].includes(l) ? l : 'it'; }
+      function syncLegalLang(){
+        const lang = currentLang();
+        document.querySelectorAll('.modal .legal').forEach(el => { el.hidden = !el.classList.contains('lang-' + lang); });
+        if (fullLink) fullLink.href = 'LICENSE.html#' + lang;
+      }
+      function open(){ syncLegalLang(); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+      function close(){ modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+      openBtn && openBtn.addEventListener('click', open);
+      closeBtn && closeBtn.addEventListener('click', close);
+      okBtn && okBtn.addEventListener('click', close);
+      modal && modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
+      langSel && langSel.addEventListener('change', syncLegalLang);
+
+      const rows = document.getElementById('rows');
+      rows && rows.addEventListener('click', (e) => { if (e.target.closest && e.target.closest('a')) { e.stopPropagation(); } });
+
+      // FAB Home solo in PWA
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const homeFab = document.getElementById('homeFab');
+      if (isStandalone && homeFab) homeFab.classList.add('show');
+
+      // --- Routing PDF su viewer.html (così hai SEMPRE il bottone "Torna") ---
+      function isPdf(href){ return href && /\.pdf($|[?#])/i.test(href); }
+      function absUrl(href){ try { return new URL(href, location.href).toString(); } catch { return href; } }
+      function isExternal(url){
+        try{ const u = new URL(url, location.href); return u.origin !== location.origin; }catch{ return false; }
+      }
+
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest && e.target.closest('a');
+        if (!a) return;
+        const href = a.getAttribute('href') || '';
+        if (!href) return;
+
+        // 1) PDF: instrada SEMPRE al viewer interno con topbar (browser e PWA)
+        if (isPdf(href)) {
+          e.preventDefault();
+          location.href = './viewer.html?u=' + encodeURIComponent(absUrl(href));
+          return;
+        }
+
+        // 2) Link esterni: in PWA apri fuori dall'app
+        if (isStandalone && isExternal(href)) {
+          e.preventDefault();
+          try { window.open(absUrl(href), '_blank'); } catch { location.href = href; }
+        }
+      }, { capture:true });
+    })();
+  </script>
+
+  <!-- App principale -->
+  <script src="app.js" defer></script>
+  <noscript><div class="wrap" style="color:#fff">Attiva JavaScript per usare il configuratore.</div></noscript>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "CASCOS — Configuratore 2 Colonne (PWA)",
+  "short_name": "CASCOS Config",
+  "id": "./",
+  "scope": "./",
+  "start_url": "./index.html?src=pwa",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1022",
+  "theme_color": "#0b1022",
+  "description": "Configuratore tecnico-commerciale per sollevatori a 2 colonne CASCOS. Preventivazione, schede e PDF. Utilizzabile anche offline.",
+  "categories": ["business", "productivity", "tools"],
+  "dir": "ltr",
+  "lang": "it",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nuova configurazione",
+      "short_name": "Nuova",
+      "url": "./index.html?new=1",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

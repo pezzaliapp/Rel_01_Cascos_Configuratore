@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lift Configurator — pezzaliAPP.com</title>
+  <meta name="color-scheme" content="dark light">
+  <style>
+    :root{
+      --bg:#0b1022;--card:#111735;--ink:#eef2ff;--muted:#9fb0d9;
+      --link:#2dd4bf;--line:#1d2a55;
+    }
+    @media(prefers-color-scheme:light){
+      :root{--bg:#ffffff;--card:#f6f8ff;--ink:#0b1022;--muted:#47527a;--line:#e3e8ff}
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;background:var(--bg);color:var(--ink);
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    }
+    header,section,footer{max-width:960px;margin:auto;padding:22px 18px}
+    header{
+      text-align:center;border-bottom:1px solid var(--line);
+      padding-top:32px;padding-bottom:24px
+    }
+    header img{
+      width:96px;height:96px;border-radius:20px;
+      box-shadow:0 0 12px #0003;margin-bottom:12px;
+    }
+    h1{font-size:26px;margin:.2em 0}
+    h2{margin:1.4em 0 .4em;font-size:20px}
+    p,li{color:var(--ink)}
+    ul{margin:.6em 0 1em 1.2em}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:16px;
+      padding:18px;margin:18px 0;
+    }
+    footer{
+      border-top:1px solid var(--line);margin-top:28px;
+      font-size:14px;color:var(--muted);text-align:center;padding:18px;
+    }
+    .links a{
+      display:inline-block;margin:6px 8px;padding:6px 12px;
+      background:var(--card);border-radius:8px;border:1px solid var(--line);
+      color:var(--link);font-weight:500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="./icons/icon-512.png" alt="Lift Configurator Icon" loading="lazy">
+    <h1>🧰 Lift Configurator — pezzaliAPP.com</h1>
+    <p><strong>Strumento professionale</strong> per la preventivazione e la selezione di sollevatori a 2 colonne.</p>
+    <p>Sviluppato da <strong>Alessandro Pezzali</strong> per uso commerciale e formativo.</p>
+  </header>
+
+  <section>
+    <h2>🚗 Descrizione</h2>
+    <div class="card">
+      <p><strong>Lift Configurator</strong> è una Progressive Web App (PWA) che permette di:</p>
+      <ul>
+        <li>Analizzare vincoli dell’officina (altezza, larghezza, alimentazione, soletta);</li>
+        <li>Selezionare il modello CASCOS più adatto ai parametri tecnici;</li>
+        <li>Aprire <strong>schede PDF</strong>, <strong>tavole bracci</strong> e <strong>fondazioni</strong>;</li>
+        <li>Esportare risultati in <strong>CSV</strong>, <strong>JSON</strong> o condividere la configurazione;</li>
+        <li>Funzionare anche <strong>offline</strong> come una vera app installata.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>🌐 Accesso rapido</h2>
+    <div class="links">
+      <a href="https://www.alessandropezzali.it/Cascos_Configuratore/" target="_blank" rel="noopener">Apri l’app</a>
+      <a href="https://www.alessandropezzali.it/Cascos_Configuratore/LICENSE.html" target="_blank" rel="noopener">Licenza e informazioni legali</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>⚙️ Tecnologie</h2>
+    <ul>
+      <li><strong>HTML5</strong>, <strong>CSS3</strong>, <strong>JavaScript (vanilla)</strong></li>
+      <li><strong>PWA</strong> con Service Worker cache-first</li>
+      <li>Supporto <strong>multi-lingua</strong> (IT, EN, ES, FR, PT)</li>
+      <li>Dataset modelli in <code>models.json</code></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>📱 Installazione</h2>
+    <div class="card">
+      <p>Puoi installare l’app direttamente dal browser (Edge, Chrome, Safari):</p>
+      <ol>
+        <li>Apri <a href="https://www.alessandropezzali.it/Cascos_Configuratore/" target="_blank" rel="noopener">Lift Configurator</a></li>
+        <li>Tocca <strong>Condividi → Aggiungi alla schermata Home</strong></li>
+        <li>L’icona apparirà come app nativa, utilizzabile anche <strong>offline</strong>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>🧾 Licenza d’uso</h2>
+    <p>Questo software è concesso in <strong>uso limitato non esclusivo</strong>, per finalità di:</p>
+    <ul>
+      <li>Preventivazione commerciale</li>
+      <li>Formazione e dimostrazione tecnica</li>
+    </ul>
+    <p>Consulta il testo completo della licenza:</p>
+    <p><a href="https://www.alessandropezzali.it/Cascos_Configuratore/LICENSE.html" target="_blank" rel="noopener">LICENSE.html</a></p>
+  </section>
+
+  <footer>
+    © 2025 <strong>Alessandro Pezzali</strong> — <a href="https://www.pezzaliapp.com" target="_blank" rel="noopener">pezzaliAPP.com</a><br>
+    Tutti i diritti riservati. Diffusione non autorizzata vietata.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Informazioni legali e Licenza d’uso — CASCOS Configuratore</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <style>
+    :root{
+      --bg:#0b1022;--card:#111735;--ink:#eef2ff;--muted:#9fb0d9;
+      --ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--line:#1d2a55;--focus:#2dd4bf;
+      --paper:#ffffff;--ink-inv:#0b1022;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#ffffff; --card:#f7f9ff; --ink:#0b1022; --muted:#4b5b86; --line:#dfe6fb; }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--ink);
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    }
+
+    /* Sticky header */
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(10px);
+      background:color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom:1px solid var(--line);
+    }
+    .wrap{max-width:960px;margin:0 auto;padding:12px 18px}
+
+    .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .backbtn{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);background:var(--card);color:var(--ink);
+      padding:8px 12px;border-radius:12px;text-decoration:none;
+      white-space:nowrap;
+    }
+    .backbtn:hover{border-color:var(--focus);box-shadow:0 0 0 3px #2dd4bf33}
+    .head-title{display:flex;flex-direction:column;gap:6px;flex:1 1 auto}
+    h1{margin:0;font-size:clamp(22px,2.2vw + 12px,34px);line-height:1.2}
+
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{border:1px solid var(--line);padding:2px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+
+    /* language pills */
+    .langbar{display:flex;gap:8px;flex-wrap:wrap;padding:8px 0}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);background:var(--card);color:var(--ink);
+      padding:8px 12px;border-radius:999px;cursor:pointer;
+      text-decoration:none;font-size:14px;user-select:none;
+    }
+    .pill[aria-current="true"]{
+      border-color:var(--focus);
+      box-shadow:0 0 0 3px #2dd4bf33;
+    }
+
+    main{padding-bottom:28px}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:16px;
+      padding:18px;margin:14px 0;
+    }
+    .muted{color:var(--muted)}
+    h2{margin:1.4em 0 .4em;font-size:20px}
+    a{color:inherit}
+    .notice{border-left:4px solid var(--focus);background:#0f183b22;padding:12px;border-radius:12px}
+
+    footer{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+
+    @media print{
+      .topbar{position:static;backdrop-filter:none;border:none}
+      .langbar, .backbtn{display:none}
+      body{background:white;color:black}
+      .card{border-color:#ddd}
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky header -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="toolbar">
+        <a href="./index.html" id="backLink" class="backbtn" aria-label="Torna al configuratore">← Torna al configuratore</a>
+        <div class="head-title">
+          <h1 id="pageTitle">Informazioni legali e Licenza d’uso</h1>
+          <div class="chips">
+            <span class="chip">Versione: 1.0</span>
+            <span class="chip" id="chipDate">Data: 10/10/2025</span>
+            <span class="chip" id="chipJur">Giurisdizione: IT / UE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language pills -->
+      <nav class="langbar" role="tablist" aria-label="Lingue del documento">
+        <button class="pill" role="tab" id="tab-it" data-lang="it" aria-selected="true" aria-current="true">🇮🇹 Italiano</button>
+        <button class="pill" role="tab" id="tab-en" data-lang="en" aria-selected="false">🇬🇧 English</button>
+        <button class="pill" role="tab" id="tab-es" data-lang="es" aria-selected="false">🇪🇸 Español</button>
+        <button class="pill" role="tab" id="tab-fr" data-lang="fr" aria-selected="false">🇫🇷 Français</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ================= ITALIANO (originale) ================= -->
+    <article id="doc-it" lang="it" data-lang="it">
+      <p class="muted">Documento legale per “CASCOS — Configuratore Sollevatori 2 Colonne (PWA)”.</p>
+
+      <section class="card">
+        <h2>1) Titolare dei diritti</h2>
+        <p>
+          L’applicazione web (“App”) è opera dell’ingegno ai sensi della L. 633/1941 e successive modifiche.
+          Ideazione, progetto, sviluppo e documentazione: <strong>© 2025 Alessandro Pezzali</strong>.
+          L’autore detiene tutti i diritti di <strong>proprietà intellettuale e industriale</strong> sul codice sorgente,
+          sull’interfaccia, sulla logica algoritmica e sui materiali testuali e grafici di propria creazione.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>2) Marchi e denominazioni di terzi</h2>
+        <p>
+          <strong>CASCOS</strong> e i nomi di modelli o prodotti citati sono <strong>marchi dei rispettivi proprietari</strong>.
+          L’uso in questa App è esclusivamente descrittivo (<em>nominative fair use</em>) e
+          <strong>non implica affiliazione, approvazione o sponsorizzazione</strong>.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>3) Licenza d’uso concessa</h2>
+        <p>All’utilizzatore è concesso un diritto <strong>limitato, non esclusivo, non trasferibile</strong> di utilizzo della App per:</p>
+        <ul>
+          <li><strong>Preventivazione commerciale per la vendita</strong> di soluzioni CASCOS (pre-vendita, quotazioni, comparazioni);</li>
+          <li><strong>Dimostrazioni</strong> e attività formative interne;</li>
+          <li>Consultazione dei dati tecnici contenuti nella App e nei PDF collegati.</li>
+        </ul>
+        <p>Ogni ulteriore sfruttamento (riproduzione, modifica, distribuzione, sublicenza, pubblicazione in canali pubblici) richiede <strong>autorizzazione scritta</strong> dell’autore.</p>
+      </section>
+
+      <section class="card">
+        <h2>4) Restrizioni e tracciamento anti-diffusione</h2>
+        <ul>
+          <li>Vietate la <strong>copia</strong> e la <strong>redistribuzione</strong> dell’App o di parti di essa senza consenso scritto;</li>
+          <li>Vietati l’<strong>upload</strong> su repository pubblici e la condivisione su canali non autorizzati;</li>
+          <li>L’App può includere <strong>marcature e log tecnici</strong> esclusivamente per tutelare la proprietà intellettuale e prevenire diffusioni non autorizzate.</li>
+        </ul>
+        <p class="notice">L’uso per la <strong>preventivazione commerciale</strong> è consentito; la <strong>distribuzione del software</strong> non lo è, salvo permesso scritto dell’autore.</p>
+      </section>
+
+      <section class="card">
+        <h2>5) Responsabilità e disclaimer</h2>
+        <ul>
+          <li>I dati tecnici sono indicativi; fanno fede i documenti e le istruzioni ufficiali dei produttori;</li>
+          <li>La App è fornita “<em>così com’è</em>” senza garanzie espresse o implicite;</li>
+          <li>L’autore non risponde di danni diretti o indiretti derivanti dall’uso o da interpretazioni errate dei contenuti.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>6) Conformità normativa</h2>
+        <ul>
+          <li><strong>L. 633/1941</strong> (diritto d’autore) e s.m.i.;</li>
+          <li><strong>Regolamento (UE) 2017/1001</strong> sul marchio dell’Unione europea;</li>
+          <li>Direttiva 2001/29/CE (società dell’informazione);</li>
+          <li>Principi di <em>uso descrittivo</em> dei segni distintivi.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>7) Privacy minima</h2>
+        <p>L’App non raccoglie dati personali eccedenti la finalità di funzionamento. Eventuali log tecnici e marcature anti-diffusione, quando presenti, sono trattati unicamente per la tutela della proprietà intellettuale e per la sicurezza dell’applicazione.</p>
+      </section>
+
+      <section class="card">
+        <h2>8) Contatti e comunicazioni</h2>
+        <p>Richieste di autorizzazione, segnalazioni o questioni legali: <strong>Alessandro Pezzali</strong> — sito ufficiale:
+          <a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">www.alessandropezzali.it</a></p>
+      </section>
+
+      <footer>© 2025 Alessandro Pezzali — Tutti i diritti riservati. | È vietata la diffusione non autorizzata.</footer>
+    </article>
+
+    <!-- ================= ENGLISH ================= -->
+    <article id="doc-en" lang="en" data-lang="en" hidden>
+      <p class="muted">Legal notice for “CASCOS — 2-Post Lift Configurator (PWA)”.</p>
+      <section class="card"><h2>1) Rights holder</h2><p>The web application (“App”) is a work of authorship protected under Italian Copyright Law (L. 633/1941). Design, development and documentation: <strong>© 2025 Alessandro Pezzali</strong>. The author retains all <strong>intellectual and industrial property</strong> rights in the source code, UI, algorithms and original texts/graphics.</p></section>
+      <section class="card"><h2>2) Third-party trademarks</h2><p><strong>CASCOS</strong> and any product/model names are <strong>trademarks of their respective owners</strong>. Their use here is purely descriptive (<em>nominative fair use</em>) and <strong>does not imply affiliation, approval or sponsorship</strong>.</p></section>
+      <section class="card"><h2>3) License grant</h2><p>A <strong>limited, non-exclusive, non-transferable</strong> license is granted to use the App for:</p><ul><li><strong>Commercial quotation/estimation</strong> for CASCOS product sales (pre-sales, quotes, comparisons);</li><li><strong>Demonstrations</strong> and internal training;</li><li>Consultation of the technical data in the App and linked PDFs.</li></ul><p>Any further exploitation (reproduction, modification, distribution, sublicensing, public publishing) requires the author’s <strong>prior written consent</strong>.</p></section>
+      <section class="card"><h2>4) Restrictions & anti-leak tracking</h2><ul><li>No <strong>copying</strong> or <strong>redistribution</strong> of the App or its components without written consent;</li><li>No uploads to public repositories or sharing on unauthorised channels;</li><li>The App may include <strong>watermarking and technical logs</strong> solely to protect IP and prevent unauthorised distribution.</li></ul><p class="notice">Use for <strong>commercial quotation</strong> is allowed; <strong>software distribution</strong> is not, unless expressly authorised.</p></section>
+      <section class="card"><h2>5) Disclaimer</h2><ul><li>Data are indicative; official manufacturer documentation prevails;</li><li>The App is provided “<em>as is</em>” with no express or implied warranties;</li><li>The author is not liable for direct or indirect damages arising from use or misinterpretation.</li></ul></section>
+      <section class="card"><h2>6) Compliance</h2><ul><li><strong>Italian Law 633/1941</strong> (copyright) as amended;</li><li><strong>Regulation (EU) 2017/1001</strong> on the EU trade mark;</li><li>Directive 2001/29/EC (information society);</li><li>Principles of <em>descriptive use</em> of signs.</li></ul></section>
+      <section class="card"><h2>7) Minimal privacy</h2><p>The App does not collect personal data beyond what is necessary for its operation. Any technical logs/watermarks, where present, are processed solely to protect IP and ensure application security.</p></section>
+      <section class="card"><h2>8) Contacts</h2><p>Authorisations or legal matters: <strong>Alessandro Pezzali</strong> — official website: <a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">www.alessandropezzali.it</a></p></section>
+      <footer>© 2025 Alessandro Pezzali — All rights reserved. | Unauthorised distribution is prohibited.</footer>
+    </article>
+
+    <!-- ================= ESPAÑOL ================= -->
+    <article id="doc-es" lang="es" data-lang="es" hidden>
+      <p class="muted">Documento legal para “CASCOS — Configurador de 2 columnas (PWA)”.</p>
+      <section class="card"><h2>1) Titular de los derechos</h2><p>La aplicación web (“App”) es una obra protegida por la Ley de Propiedad Intelectual italiana (L. 633/1941). Diseño, desarrollo y documentación: <strong>© 2025 Alessandro Pezzali</strong>. El autor mantiene todos los derechos de <strong>propiedad intelectual e industrial</strong> sobre el código fuente, la interfaz, la lógica algorítmica y los materiales originales.</p></section>
+      <section class="card"><h2>2) Marcas de terceros</h2><p><strong>CASCOS</strong> y los nombres de productos o modelos citados son <strong>marcas de sus respectivos titulares</strong>. Su uso aquí es meramente descriptivo (<em>nominative fair use</em>) y <strong>no implica afiliación, aprobación ni patrocinio</strong>.</p></section>
+      <section class="card"><h2>3) Licencia de uso</h2><p>Se concede una licencia <strong>limitada, no exclusiva e intransferible</strong> para utilizar la App con fines de:</p><ul><li><strong>Presupuestación comercial para la venta</strong> de soluciones CASCOS (preventas, cotizaciones, comparativas);</li><li><strong>Demostraciones</strong> y formación interna;</li><li>Consulta de los datos técnicos de la App y de los PDF vinculados.</li></ul><p>Cualquier otro aprovechamiento (reproducción, modificación, distribución, sublicencia, publicación en canales públicos) requiere <strong>autorización escrita</strong> del autor.</p></section>
+      <section class="card"><h2>4) Restricciones y seguimiento anti-difusión</h2><ul><li>Prohibida la <strong>copia</strong> o <strong>redistribución</strong> de la App sin consentimiento escrito;</li><li>Prohibido subirla a repositorios públicos o compartirla en canales no autorizados;</li><li>La App puede incluir <strong>marcas de agua y registros técnicos</strong> únicamente para proteger la propiedad intelectual y prevenir difusiones no autorizadas.</li></ul><p class="notice">El uso para <strong>presupuestación comercial</strong> está permitido; la <strong>distribución del software</strong> no lo está, salvo autorización expresa.</p></section>
+      <section class="card"><h2>5) Exención de responsabilidad</h2><ul><li>Los datos técnicos son orientativos; prevalece la documentación oficial del fabricante;</li><li>La App se proporciona “<em>tal cual</em>” sin garantías expresas ni implícitas;</li><li>El autor no responde por daños directos o indirectos derivados del uso o mala interpretación.</li></ul></section>
+      <section class="card"><h2>6) Cumplimiento normativo</h2><ul><li><strong>Ley italiana 633/1941</strong> (derecho de autor);</li><li><strong>Reglamento (UE) 2017/1001</strong> sobre la marca de la Unión Europea;</li><li>Directiva 2001/29/CE (sociedad de la información);</li><li>Principios de <em>uso descriptivo</em> de los signos distintivos.</li></ul></section>
+      <section class="card"><h2>7) Privacidad mínima</h2><p>La App no recoge datos personales más allá de lo necesario para su funcionamiento. Los posibles registros técnicos y marcas de agua se tratan exclusivamente para proteger la propiedad intelectual y la seguridad de la aplicación.</p></section>
+      <section class="card"><h2>8) Contacto</h2><p>Autorizaciones o cuestiones legales: <strong>Alessandro Pezzali</strong> — sitio oficial: <a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">www.alessandropezzali.it</a></p></section>
+      <footer>© 2025 Alessandro Pezzali — Todos los derechos reservados. | Se prohíbe la distribución no autorizada.</footer>
+    </article>
+
+    <!-- ================= FRANÇAIS ================= -->
+    <article id="doc-fr" lang="fr" data-lang="fr" hidden>
+      <p class="muted">Document juridique pour « CASCOS — Configurateur 2 colonnes (PWA) ».</p>
+      <section class="card"><h2>1) Titulaire des droits</h2><p>L’application web (« App ») est une œuvre protégée par la loi italienne sur le droit d’auteur (L. 633/1941). Conception, développement et documentation : <strong>© 2025 Alessandro Pezzali</strong>. L’auteur détient tous les droits de <strong>propriété intellectuelle et industrielle</strong> sur le code source, l’interface, la logique algorithmique et les contenus originaux.</p></section>
+      <section class="card"><h2>2) Marques de tiers</h2><p><strong>CASCOS</strong> et les noms de produits/modèles cités sont des <strong>marques de leurs propriétaires respectifs</strong>. Leur utilisation est uniquement descriptive (<em>nominative fair use</em>) et <strong>n’implique aucune affiliation, approbation ou parrainage</strong>.</p></section>
+      <section class="card"><h2>3) Licence d’utilisation</h2><p>Une licence <strong>limitée, non exclusive et non transférable</strong> est accordée pour :</p><ul><li><strong>La chiffrage/estimation commerciale</strong> en vue de la vente de solutions CASCOS (avant-vente, devis, comparatifs) ;</li><li><strong>Démonstrations</strong> et formation interne ;</li><li>Consultation des données techniques de l’App et des PDF liés.</li></ul><p>Toute autre exploitation (reproduction, modification, distribution, sous-licence, publication publique) nécessite l’<strong>autorisation écrite</strong> de l’auteur.</p></section>
+      <section class="card"><h2>4) Restrictions & traçabilité anti-diffusion</h2><ul><li>Interdiction de <strong>copier</strong> ou <strong>redistribuer</strong> l’App sans consentement écrit ;</li><li>Interdiction de publication sur des dépôts publics ou de partage sur des canaux non autorisés ;</li><li>L’App peut inclure des <strong>marquages et journaux techniques</strong> exclusivement pour protéger la PI et prévenir les diffusions non autorisées.</li></ul><p class="notice">L’usage pour la <strong>chiffrage commerciale</strong> est autorisé ; la <strong>distribution du logiciel</strong> ne l’est pas, sauf autorisation expresse.</p></section>
+      <section class="card"><h2>5) Avertissement</h2><ul><li>Les données sont indicatives ; la documentation officielle du fabricant prévaut ;</li><li>L’App est fournie « <em>en l’état</em> » sans garantie expresse ou implicite ;</li><li>L’auteur n’est pas responsable des dommages directs ou indirects dus à l’usage ou à une mauvaise interprétation.</li></ul></section>
+      <section class="card"><h2>6) Conformité</h2><ul><li><strong>Loi italienne 633/1941</strong> (droit d’auteur) ;</li><li><strong>Règlement (UE) 2017/1001</strong> sur la marque de l’Union européenne ;</li><li>Directive 2001/29/CE (société de l’information) ;</li><li>Principes d’<em>usage descriptif</em> des signes distinctifs.</li></ul></section>
+      <section class="card"><h2>7) Vie privée minimale</h2><p>L’App ne collecte pas de données personnelles au-delà de ce qui est nécessaire à son fonctionnement. Les éventuels journaux techniques et marquages sont traités uniquement pour protéger la propriété intellectuelle et la sécurité de l’application.</p></section>
+      <section class="card"><h2>8) Contacts</h2><p>Autorisations ou questions juridiques : <strong>Alessandro Pezzali</strong> — site officiel : <a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">www.alessandropezzali.it</a></p></section>
+      <footer>© 2025 Alessandro Pezzali — Tous droits réservés. | Diffusion non autorisée interdite.</footer>
+    </article>
+  </main>
+
+  <script>
+    (function(){
+      const qs = s => document.querySelector(s);
+      const qsa = s => Array.from(document.querySelectorAll(s));
+      const sections = qsa('article[data-lang]');
+      const pills = qsa('.pill[data-lang]');
+      const LANGS = ['it','en','es','fr'];
+
+      const uiText = {
+        it: { title:'Informazioni legali e Licenza d’uso', jur:'Giurisdizione: IT / UE', back:'← Torna al configuratore', backAria:'Torna al configuratore' },
+        en: { title:'Legal information & License',          jur:'Jurisdiction: IT / EU law', back:'← Back to configurator', backAria:'Back to configurator' },
+        es: { title:'Información legal y Licencia de uso',  jur:'Jurisdicción: IT / UE',     back:'← Volver al configurador', backAria:'Volver al configurador' },
+        fr: { title:'Informations légales et Licence',      jur:'Juridiction : IT / UE',     back:'← Retour au configurateur', backAria:'Retour au configurateur' }
+      };
+
+      function show(lang){
+        localStorage.setItem('license_lang', lang);
+        document.documentElement.lang = lang;
+
+        // toggle pills + sections
+        pills.forEach(p=>{
+          const active = p.dataset.lang === lang;
+          p.setAttribute('aria-selected', active ? 'true' : 'false');
+          if (active) p.setAttribute('aria-current','true'); else p.removeAttribute('aria-current');
+        });
+        sections.forEach(a=>{ a.hidden = a.dataset.lang !== lang; });
+
+        // localize header text + back button
+        const t = uiText[lang] || uiText.it;
+        qs('#pageTitle').textContent = t.title;
+        qs('#chipJur').textContent  = t.jur;
+        const back = qs('#backLink');
+        if (back){ back.textContent = t.back; back.setAttribute('aria-label', t.backAria); }
+
+        // keep URL in sync
+        const url = new URL(location.href);
+        url.searchParams.set('lang', lang);
+        history.replaceState(null, '', url.toString());
+      }
+
+      pills.forEach(p=>p.addEventListener('click', ()=>show(p.dataset.lang)));
+
+      const initial = new URL(location.href).searchParams.get('lang')
+        || localStorage.getItem('license_lang')
+        || 'it';
+      show(LANGS.includes(initial)?initial:'it');
+    })();
+  </script>
+</body>
+</html>

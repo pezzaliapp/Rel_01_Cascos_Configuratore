@@ -1,55 +1,14 @@
-// app.js — v6.16
+// app.js — v6.17
 // Vehicle filter + auto-fill + per-model Arms PDFs (ARMS_FILES) + Manual page map
 // + i18n + share/csv/pdf/save + PWA + URL state restore
-// + iOS/PWA PDF wrapper con pulsante "← Torna alla App"
 
 (function () {
   'use strict';
 
-  // ================== iOS/PWA — PDF wrapper "Torna alla App" ==================
-  const IS_STANDALONE = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  const isPdfHref = (href) => !!href && /\.pdf($|[?#])/i.test(href);
-  const absUrl = (u) => { try { return new URL(u, location.href).toString(); } catch { return u; } };
-
-  function openPDFwithReturn(url) {
-    if (!IS_STANDALONE) { window.open(url, '_blank'); return; }
-    const html = `
-      <!DOCTYPE html><html lang="it"><head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-        <title>Documento PDF</title>
-        <style>
-          :root{ --bg:#0b1022; --bar:#111735; --ink:#eef2ff; --line:#1d2a55; --focus:#2dd4bf; }
-          html,body{height:100%}
-          body{margin:0;background:var(--bg);color:var(--ink);display:flex;flex-direction:column}
-          .bar{background:var(--bar);border-bottom:1px solid var(--line);padding:10px env(safe-area-inset-right) 10px calc(12px + env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between}
-          .bar .title{font:15px system-ui, -apple-system, Segoe UI, Roboto, Arial}
-          .btn{background:#0e193f;border:1px solid var(--line);padding:8px 12px;border-radius:10px;color:var(--ink);text-decoration:none;font:14px system-ui}
-          iframe{flex:1;border:0;width:100%}
-        </style>
-      </head>
-      <body>
-        <div class="bar">
-          <div class="title">📄 Documento</div>
-          <a class="btn" href="./index.html">← Torna alla App</a>
-        </div>
-        <iframe src="${url}" allow="fullscreen"></iframe>
-      </body></html>`;
-    const w = window.open('', '_blank');
-    if (w && w.document) { w.document.write(html); w.document.close(); }
-    else { location.href = url; } // estremo fallback
-  }
-
-  // Intercetta tutti i click su <a> verso PDF (solo in PWA)
-  document.addEventListener('click', (e) => {
-    const a = e.target && e.target.closest ? e.target.closest('a') : null;
-    if (!a || !IS_STANDALONE) return;
-    const href = a.getAttribute('href') || '';
-    if (isPdfHref(href)) {
-      e.preventDefault();
-      openPDFwithReturn(absUrl(href));
-    }
-  }, { capture:true });
+  // ================== info PWA (usata in fondo per il bottone Installa) ==================
+  const IS_STANDALONE =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
 
   // ================== helpers ==================
   const $  = (s) => document.querySelector(s);
@@ -177,7 +136,7 @@
   }
 
   // ================== i18n ==================
-  const I18N = { /* (identico alla tua v6.14) */ 
+  const I18N = { /* (identico alla tua v6.16) */ 
     it:{title:'🔧 CASCOS — Configuratore Sollevatori 2 Colonne',lang:'Lingua',save:'Salva',readme_btn:'Leggimi',install:'Installa',
       sec1:'1) Vincoli dell’officina',h:'Altezza utile soffitto (mm)',w:'Larghezza baia disponibile (mm)',
       conc:'Qualità calcestruzzo', conc_hint:'Per i modelli 3.2–5.5 t sono richiesti ancoraggi su calcestruzzo C20/25.',
@@ -253,9 +212,17 @@
 
   function applyLang(lang) {
     const L = I18N[lang] || I18N.it;
-    bindings.forEach(([id,key]) => { const el = document.getElementById(id); if (el) el.innerHTML = L[key]; });
+    bindings.forEach(([id,key]) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = L[key];
+    });
     const gen = document.getElementById('armsGeneralBtn');
-    if (gen) { gen.textContent = L.arms_general || '📐 Misure generali (tipi veicolo)'; gen.href = PDF.arms_general; gen.target = '_blank'; gen.rel = 'noopener'; }
+    if (gen) {
+      gen.textContent = L.arms_general || '📐 Misure generali (tipi veicolo)';
+      gen.href = PDF.arms_general;
+      gen.target = '_blank';
+      gen.rel = 'noopener';
+    }
     populateVehicleSelect(lang);
     document.documentElement.lang = lang;
     safeRender();
@@ -276,12 +243,23 @@
 
   // ================== URL state ==================
   const qp = new URLSearchParams(location.search);
-  const preselect = { lang: qp.get('lang') || null, ids: (qp.get('ids') || '').split(',').map(s=>s.trim()).filter(Boolean) };
+  const preselect = {
+    lang: qp.get('lang') || null,
+    ids: (qp.get('ids') || '').split(',').map(s=>s.trim()).filter(Boolean)
+  };
   const restoreInputs = { H:'inpH', W:'inpW', T:'inpThickness', C:'inpConcrete', P:'inpPower', B:'inpBase', GVW:'inpGVW', WB:'inpWB', V:'vehicleSel' };
   Object.entries(restoreInputs).forEach(([q,id]) => {
-    const v = qp.get(q); if (v != null && v !== '') { const el = document.getElementById(id); if (el) el.value = v; }
+    const v = qp.get(q);
+    if (v != null && v !== '') {
+      const el = document.getElementById(id);
+      if (el) el.value = v;
+    }
   });
-  if (preselect.lang) { const sel = $('#langSel'); if (sel) sel.value = preselect.lang; applyLang(preselect.lang); }
+  if (preselect.lang) {
+    const sel = $('#langSel');
+    if (sel) sel.value = preselect.lang;
+    applyLang(preselect.lang);
+  }
 
   fetch(DATA_URL, { cache: 'no-store' })
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status} su ${DATA_URL}`); return r.json(); })
@@ -289,17 +267,33 @@
       if (!Array.isArray(d)) throw new Error('models.json non è un array');
       MODELS = d;
       initVehicleFilter();
-      if (preselect.lang) { const sel = $('#langSel'); if (sel) sel.value = preselect.lang; applyLang(preselect.lang); }
-      else { applyLang(document.documentElement.lang || 'it'); }
+      if (preselect.lang) {
+        const sel = $('#langSel');
+        if (sel) sel.value = preselect.lang;
+        applyLang(preselect.lang);
+      } else {
+        applyLang(document.documentElement.lang || 'it');
+      }
       calculate();
-      if (preselect.ids.length) setTimeout(()=>{ const setIds = new Set(preselect.ids); $$('.pick').forEach(chk=>{ if(setIds.has(chk.dataset.id)) chk.checked = true; }); },0);
+      if (preselect.ids.length) {
+        setTimeout(()=>{
+          const setIds = new Set(preselect.ids);
+          $$('.pick').forEach(chk => { if (setIds.has(chk.dataset.id)) chk.checked = true; });
+        },0);
+      }
     })
     .catch(err => {
       console.error('Errore nel caricamento di models.json:', err);
       MODELS = [];
-      initVehicleFilter(); applyLang(document.documentElement.lang || 'it');
+      initVehicleFilter();
+      applyLang(document.documentElement.lang || 'it');
       const warnings = document.getElementById('warnings');
-      if (warnings) { const s = document.createElement('span'); s.className='tag bad'; s.textContent='Impossibile caricare i modelli (rete/cache/MIME).'; warnings.appendChild(s); }
+      if (warnings) {
+        const s = document.createElement('span');
+        s.className='tag bad';
+        s.textContent='Impossibile caricare i modelli (rete/cache/MIME).';
+        warnings.appendChild(s);
+      }
     });
 
   // ================== vehicle types / defaults / compat ==================
@@ -313,9 +307,13 @@
     lcv:{ it:'Veicoli lunghi / WAGON', en:'Long vehicles / WAGON', es:'Vehículos largos / WAGON', fr:'Véhicules longs / WAGON', pt:'Veículos longos / WAGON' }
   };
   const VEHICLE_DEFAULTS = {
-    any:null, city:{kg:1200, wb:2400, use:'auto', duty:6}, sedan:{kg:1650, wb:2700, use:'auto', duty:6},
-    suv:{kg:2300, wb:2900, use:'auto', duty:6}, mpv:{kg:2000, wb:2800, use:'mpv', duty:6},
-    van:{kg:2800, wb:3100, use:'van', duty:10}, lcv:{kg:3200, wb:3300, use:'auto', duty:10}
+    any:null,
+    city:{kg:1200, wb:2400, use:'auto', duty:6},
+    sedan:{kg:1650, wb:2700, use:'auto', duty:6},
+    suv:{kg:2300, wb:2900, use:'auto', duty:6},
+    mpv:{kg:2000, wb:2800, use:'mpv', duty:6},
+    van:{kg:2800, wb:3100, use:'van', duty:10},
+    lcv:{kg:3200, wb:3300, use:'auto', duty:10}
   };
   const VEHICLE_COMPAT = {
     city:['C3.2','C3.2 Comfort','C3.5','C3.2S','C3.5S','C4','C4S'],
@@ -330,7 +328,12 @@
     const sel = $('#vehicleSel'); if (!sel) return;
     const cur = sel.value || qp.get('V') || 'any';
     sel.innerHTML = '';
-    Object.entries(VEHICLE_TYPES).forEach(([k,labels]) => { const opt = document.createElement('option'); opt.value = k; opt.textContent = labels[lang] || labels.it; sel.appendChild(opt); });
+    Object.entries(VEHICLE_TYPES).forEach(([k,labels]) => {
+      const opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = labels[lang] || labels.it;
+      sel.appendChild(opt);
+    });
     sel.value = cur;
   }
 
@@ -339,15 +342,22 @@
     populateVehicleSelect(curLang());
     sel.addEventListener('change', () => {
       const d = VEHICLE_DEFAULTS[sel.value];
-      if (d) { const g=$('#inpGVW'); if (g) g.value=d.kg; const w=$('#inpWB'); if (w) w.value=d.wb; const u=$('#inpUse'); if (u&&d.use) u.value=d.use; const c=$('#inpDuty'); if (c&&d.duty!=null) c.value=String(d.duty); }
+      if (d) {
+        const g=$('#inpGVW'); if (g) g.value=d.kg;
+        const w=$('#inpWB'); if (w) w.value=d.wb;
+        const u=$('#inpUse'); if (u&&d.use) u.value=d.use;
+        const c=$('#inpDuty'); if (c&&d.duty!=null) c.value=String(d.duty);
+      }
       safeRender();
     });
     if (!qp.get('V')) sel.value = 'any';
-    const lbl = $('#t_secVeh'); if (lbl) lbl.textContent = (I18N[curLang()]||I18N.it).secVeh;
+    const lbl = $('#t_secVeh');
+    if (lbl) lbl.textContent = (I18N[curLang()]||I18N.it).secVeh;
   }
 
   // ================== core logic ==================
-  const rows = $('#rows'); const warnings = $('#warnings');
+  const rows = $('#rows');
+  const warnings = $('#warnings');
 
   function issuesFor(m) {
     const L = I18N[curLang()] || I18N.it;
@@ -366,10 +376,18 @@
   }
 
   function fitScore(m) {
-    const gvw = +($('#inpGVW')?.value || 0); const wb = +($('#inpWB')?.value || 0);
+    const gvw = +($('#inpGVW')?.value || 0);
+    const wb = +($('#inpWB')?.value || 0);
     let s = 0;
-    if (gvw > 0) { const head = (m.portata - gvw) / (m.portata || 1); s += Math.max(-1, Math.min(1, head * 2)); }
-    if (wb > 0) { const wantsLong = wb >= 3000; const long = /XL|WAGON/i.test(m.id) || (m.interasse || 0) >= 3000; s += wantsLong ? (long ? 0.6 : -0.6) : (long ? -0.2 : 0.2); }
+    if (gvw > 0) {
+      const head = (m.portata - gvw) / (m.portata || 1);
+      s += Math.max(-1, Math.min(1, head * 2));
+    }
+    if (wb > 0) {
+      const wantsLong = wb >= 3000;
+      const long = /XL|WAGON/i.test(m.id) || (m.interasse || 0) >= 3000;
+      s += wantsLong ? (long ? 0.6 : -0.6) : (long ? -0.2 : 0.2);
+    }
     return s;
   }
 
@@ -432,7 +450,10 @@
     });
   }
 
-  function safeRender() { try { render(makeFiltered().slice(0, 40)); } catch (e) { console.error(e); } }
+  function safeRender() {
+    try { render(makeFiltered().slice(0, 40)); }
+    catch (e) { console.error(e); }
+  }
 
   // ================== top actions ==================
   function selectedIds() { return $$('.pick:checked').map(i => i.dataset.id); }
@@ -450,8 +471,13 @@
 
   $('#shareBtn')?.addEventListener('click', () => {
     const url = location.origin + location.pathname + '?' + buildQuery({ ids: selectedIds().join(',') });
-    if (navigator.share) { navigator.share({ title: 'CASCOS Config', url }).catch(()=>{}); }
-    else { navigator.clipboard.writeText(url).then(()=>alert('Link copiato:\n' + url)).catch(()=>alert(url)); }
+    if (navigator.share) {
+      navigator.share({ title: 'CASCOS Config', url }).catch(()=>{});
+    } else {
+      navigator.clipboard.writeText(url)
+        .then(()=>alert('Link copiato:\n' + url))
+        .catch(()=>alert(url));
+    }
   });
 
   function toCSV(list) {
@@ -460,15 +486,23 @@
     list.forEach(m => {
       const anc = m.anchors ? `${m.anchors.qty}x ${m.anchors.type} ${m.anchors.concrete} ≥${m.anchors.thickness_min_mm}mm` : '';
       const arms = m.arms ? `${m.arms.type || ''} ${(m.arms.min_mm ?? '')}-${(m.arms.max_mm ?? '')}` : '';
-      lines.push([m.id, m.ref || '', m.portata || '', m.interasse || '', m.larghezza || '', m.h_sotto_traversa || '', (m.power || []).join(','), anc, arms, (m.base || '')].join(';'));
+      lines.push([
+        m.id, m.ref || '', m.portata || '', m.interasse || '',
+        m.larghezza || '', m.h_sotto_traversa || '',
+        (m.power || []).join(','), anc, arms, (m.base || '')
+      ].join(';'));
     });
     return lines.join('\n');
   }
+
   $('#csvBtn')?.addEventListener('click', () => {
     const ids = selectedIds();
     const list = ids.length ? (MODELS || []).filter(m => ids.includes(m.id)) : makeFiltered().slice(0, 40);
     const blob = new Blob([toCSV(list)], { type: 'text/csv' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'cascos_modelli.csv'; a.click();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cascos_modelli.csv';
+    a.click();
   });
 
   $('#pdfMultiBtn')?.addEventListener('click', () => {
@@ -561,8 +595,10 @@ ${pdfHelper}
 <script>window.addEventListener('load',()=>{ ${silent ? '' : 'setTimeout(()=>print(),180);'} });</script>
 </body></html>`;
 
-    const w = window.open('', '_blank'); if (!w) return;
-    w.document.write(html); w.document.close();
+    const w = window.open('', '_blank');
+    if (!w) return;
+    w.document.write(html);
+    w.document.close();
   }
 
   // ================== compute / reset ==================
@@ -573,14 +609,20 @@ ${pdfHelper}
       const lst = [];
       if ((+($('#inpThickness')?.value || 0)) < 170) lst.push({ t:L.warn_slab, cls:'bad' });
       if ((+($('#inpGVW')?.value || 0)) > 3500) lst.push({ t:L.warn_weight, cls:'warn' });
-      lst.forEach(w => { const s = document.createElement('span'); s.className = `tag ${w.cls}`; s.textContent = w.t; warnings.appendChild(s); });
+      lst.forEach(w => {
+        const s = document.createElement('span');
+        s.className = `tag ${w.cls}`;
+        s.textContent = w.t;
+        warnings.appendChild(s);
+      });
     }
     safeRender();
   }
+
   $('#calcBtn')?.addEventListener('click', calculate);
   $('#resetBtn')?.addEventListener('click', () => {
     $$('.card input').forEach(i => i.value = '');
-    if ($('#vehicleSel')) $('#vehicleSel').value = 'any';
+    if ($('#vehicleSel')) $('#vehicleSel'].value = 'any';
     calculate();
   });
 
@@ -599,8 +641,12 @@ ${pdfHelper}
       e.preventDefault(); deferredPrompt = e; showBtn();
       if (installBtn) {
         installBtn.onclick = async () => {
-          try { await deferredPrompt.prompt(); const choice = await deferredPrompt.userChoice; if (choice && choice.outcome === 'accepted') hideBtn(); }
-          catch(_){} deferredPrompt = null;
+          try {
+            await deferredPrompt.prompt();
+            const choice = await deferredPrompt.userChoice;
+            if (choice && choice.outcome === 'accepted') hideBtn();
+          } catch(_) {}
+          deferredPrompt = null;
         };
       }
     });
@@ -610,13 +656,19 @@ ${pdfHelper}
         showBtn();
         installBtn.onclick = () => {
           const ua = navigator.userAgent || '';
-          if (/iPhone|iPad|iPod/i.test(ua)) alert('iPhone/iPad:\n1) Tocca • Condividi\n2) “Aggiungi alla schermata Home”\n3) Conferma Nome → Aggiungi');
-          else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) alert('Safari (macOS): File → Aggiungi al Dock.');
-          else alert('Se il prompt non compare:\n• Usa Chrome/Edge\n• Assicurati HTTPS attivo\n• Manifest e Service Worker devono essere validi.');
+          if (/iPhone|iPad|iPod/i.test(ua)) {
+            alert('iPhone/iPad:\n1) Tocca • Condividi\n2) “Aggiungi alla schermata Home”\n3) Conferma Nome → Aggiungi');
+          } else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) {
+            alert('Safari (macOS): File → Aggiungi al Dock.');
+          } else {
+            alert('Se il prompt non compare:\n• Usa Chrome/Edge\n• Assicurati HTTPS attivo\n• Manifest e Service Worker devono essere validi.');
+          }
         };
       }
     }, 2500);
 
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(() => {}); }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
   })();
 })();

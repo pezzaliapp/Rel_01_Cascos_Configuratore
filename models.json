@@ -27,8 +27,6 @@
   { "id":"C5.5 WAGON", "ref":"13998-W", "base":"withbase", "portata":5500, "interasse":3000, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"wagon","min_mm":780,"max_mm":1500} },
 
   
-  },
-  
   { "id":"C5.5S", "ref":"13998S", "base":"baseless", "portata":5500, "interasse":2810, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"heavy-duty","min_mm":750,"max_mm":1450} },
   { "id":"C5.5S GLOBAL", "ref":"13998SG", "base":"baseless", "portata":5500, "interasse":2810, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"triple-extension (GLOBAL)","min_mm":750,"max_mm":1450} },
 

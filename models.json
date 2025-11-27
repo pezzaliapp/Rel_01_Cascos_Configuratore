@@ -20,16 +20,13 @@
   { "id":"C4SXL", "ref":"13194S-XL", "base":"baseless", "portata":4000, "interasse":3000, "larghezza":3340, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":12,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"extra-long","min_mm":720,"max_mm":1420} },
   { "id":"C4SVS", "ref":"13194SVS", "base":"baseless", "portata":4000, "interasse":2700, "larghezza":3350, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":12,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"premium","min_mm":700,"max_mm":1330} },
 
-  { "id":"C5", "ref":"13176", "base":"withbase", "portata":5000, "interasse":2810, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"heavy-duty","min_mm":750,"max_mm":1450} },
+  
   { "id":"C5 WAGON", "ref":"13176-W", "base":"withbase", "portata":5000, "interasse":3000, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"wagon","min_mm":780,"max_mm":1500} },
 
   { "id":"C5.5", "ref":"13998", "base":"withbase", "portata":5500, "interasse":2810, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"heavy-duty","min_mm":750,"max_mm":1450} },
   { "id":"C5.5 WAGON", "ref":"13998-W", "base":"withbase", "portata":5500, "interasse":3000, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"wagon","min_mm":780,"max_mm":1500} },
 
-  { "id":"C5S", "ref":"13176S", "base":"baseless", "portata":5000, "interasse":2810, "larghezza":3590, "h_sotto_traversa":4248,
-  "power":["400/3~","230/3~"],
-  "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170},
-  "arms":{"type":"heavy-duty","min_mm":750,"max_mm":1450}
+  
   },
   
   { "id":"C5.5S", "ref":"13998S", "base":"baseless", "portata":5500, "interasse":2810, "larghezza":3590, "h_sotto_traversa":4248, "power":["400/3~","230/3~"], "anchors":{"qty":16,"type":"M16x145","concrete":"C20/25","thickness_min_mm":170}, "arms":{"type":"heavy-duty","min_mm":750,"max_mm":1450} },

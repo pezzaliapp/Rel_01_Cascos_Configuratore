@@ -43,7 +43,7 @@
     'C3.5XL':           ARMS_PATH + 'misure_C3.5XL.pdf',
     'C4':               ARMS_PATH + 'misure_C4.pdf',
     'C4XL':             ARMS_PATH + 'misure_C4XL.pdf',
-    'C5':               ARMS_PATH + 'misure_C5.pdf',
+   
     'C5.5':             ARMS_PATH + 'misure_C5.5.pdf',
     'C5 WAGON':         ARMS_PATH + 'misure_C5WAGON.pdf',
     'C5 XLWAGON':       ARMS_PATH + 'misure_C5XLWAGON.pdf',
@@ -59,7 +59,7 @@
     'C4S':              ARMS_PATH + 'misure_C4S.pdf',
     'C4SXL':            ARMS_PATH + 'misure_C4SXL.pdf',
     'C4SVS':            ARMS_PATH + 'misure_C4SVS.pdf',
-    'C5S':              ARMS_PATH + 'misure_C5S.pdf',
+   
     'C5.5S':            ARMS_PATH + 'misure_C5.5S.pdf',
     'C5.5S GLOBAL':     ARMS_PATH + 'misure_C5.5SGLOBAL.pdf',
     'C5 SWAGON':        ARMS_PATH + 'misure_C5SWAGON.pdf',
@@ -81,7 +81,7 @@
       'C3.5XL':       './docs/scheda_C3.5XL_con_pedana.pdf',
       'C4':           './docs/scheda_C4_con_pedana.pdf',
       'C4XL':         './docs/scheda_C4XL_con_pedana.pdf',
-      'C5':           './docs/scheda_C5_con_pedana.pdf',
+      
       'C5 WAGON':     './docs/scheda_C5WAGON_con_pedana.pdf',
       'C5 XLWAGON':   './docs/scheda_C5XL_WAGON_con_pedana.pdf',
       'C5.5':         './docs/scheda_C5.5_con_pedana.pdf',
@@ -95,7 +95,7 @@
       'C3.5SXL':       './docs/scheda_C3.5SXL_senza_pedana.pdf',
       'C4S':           './docs/scheda_C4S_senza_pedana.pdf',
       'C4SXL':         './docs/scheda_C4SXL_senza_pedana.pdf',
-      'C5S':           './docs/scheda_C5S_senza_pedana.pdf',
+      
       'C5.5S':         './docs/scheda_C5.5S_senza_pedana.pdf',
       'C5.5SWAGON':    './docs/scheda_C5.5SWAGON_senza_pedana.pdf',
       'C5SWAGON':      './docs/scheda_C5SWAGON_senza_pedana.pdf'

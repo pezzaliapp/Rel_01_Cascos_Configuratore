@@ -621,10 +621,10 @@ ${pdfHelper}
 
   $('#calcBtn')?.addEventListener('click', calculate);
   $('#resetBtn')?.addEventListener('click', () => {
-    $$('.card input').forEach(i => i.value = '');
-    if ($('#vehicleSel')) $('#vehicleSel'].value = 'any';
-    calculate();
-  });
+  $$('.card input').forEach(i => i.value = '');
+  if ($('#vehicleSel')) $('#vehicleSel').value = 'any';
+  calculate();
+});
 
   // ================== PWA (install + fallback iOS) ==================
   (function setupPWA() {

@@ -194,15 +194,23 @@ button.close:hover{
     })();
   </script>
 
-  <!-- Google tag (gtag.js) - CASCOS Configuratore -->
+   <!-- Google tag (gtag.js) - CASCOS Configuratore -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QVP0P3TC96"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
+
+    // Inizializzazione standard (come Business Consultant)
     gtag('js', new Date());
-    gtag('config', 'G-QVP0P3TC96', {
-      page_path: '/Rel_01_Cascos_Configuratore/'
+    gtag('config', 'G-QVP0P3TC96');
+
+    // Evento di test esplicito
+    gtag('event', 'cascos_test_open', {
+      app_name: 'Rel_01_Cascos_Configuratore'
     });
+
+    // Log in console per capire se lo script parte
+    console.log('GA4 CASCOS inizializzato - G-QVP0P3TC96');
   </script>
 </head>
 <body>

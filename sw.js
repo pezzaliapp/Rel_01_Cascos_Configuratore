@@ -1,5 +1,5 @@
 // sw.js — v6.0 — app-shell sicura + hard bypass PDF + install tollerante
-const CACHE = 'cascos-config-v6';
+const CACHE = 'cascos-config-v7';
 
 const CORE = [
   './',
